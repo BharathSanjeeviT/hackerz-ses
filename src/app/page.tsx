@@ -66,7 +66,7 @@ const Home = () => {
 
         <div className="w-full">
           <div className="my-2 pl-1">
-            Body
+            Subject
           </div>
           <input
             value={body}
