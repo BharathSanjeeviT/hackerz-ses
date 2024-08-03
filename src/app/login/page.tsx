@@ -1,12 +1,20 @@
 "use client"
 import { useSession } from "@/store";
-import { useState } from "react";
+import { Play } from "next/font/google";
+import { useEffect, useState } from "react";
 
 const Login = () => {
-  const { signIn } = useSession()
+  const { token, signIn } = useSession()
   const [uname, setUname] = useState("") 
   const [pass, setPass] = useState("") 
   const[load, setLoad] = useState(false)
+
+  useEffect(() => {
+    if(token){
+      window.location.assign('/')
+    }
+  }, [])
+
   const makeUserSignIn = async () => {
     if(!uname || !pass){
       alert("Username or Password cannot be empty")
