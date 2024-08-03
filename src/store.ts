@@ -18,7 +18,7 @@ const fetchTokenFromLocalStorage = () => {
 }
 const setTokenToLocalStorage = (newToken: string) => {
   if(isClient){
-    localStorage.set("token", newToken)
+    localStorage.setItem("token", newToken)
   }
   return;
 }
@@ -43,6 +43,8 @@ export const useSession = create<SessionStore>((set) => ({
       window.location.assign('/')
       return true;
     } catch (err) {
+      console.log("pass wrong")
+      console.log(err)
       return false;
     }
   },
