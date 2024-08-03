@@ -5,11 +5,28 @@ interface SessionStore {
   token: string | null;
   signIn: (uname: string, pass: string) => Promise<boolean>,
   signOut: () => void,
-
 }
 
+const isClient = typeof window !== 'undefined';
+
 const fetchTokenFromLocalStorage = () => {
-  return localStorage.getItem("token")
+  if(isClient){
+    return localStorage.getItem("token")
+  }else{
+    return null;
+  }
+}
+const setTokenToLocalStorage = (newToken: string) => {
+  if(isClient){
+    localStorage.set("token", newToken)
+  }
+  return;
+}
+const removeTokenFromLocalStorage = () => {
+  if(isClient){
+    localStorage.removeItem('token')
+  }
+  return;
 }
 
 export const useSession = create<SessionStore>((set) => ({
@@ -19,7 +36,7 @@ export const useSession = create<SessionStore>((set) => ({
       const { data } = await axios.post(`https://qh5vqp7drdcqa6zsumyjnqy3ya0aynwh.lambda-url.ap-south-1.on.aws/user/login`,
         { uname, pass }
       );
-      localStorage.setItem("token", data.token)
+      setTokenToLocalStorage(data.token)
       set(() => ({
         token: data.token,
       }))
@@ -30,7 +47,7 @@ export const useSession = create<SessionStore>((set) => ({
     }
   },
   signOut: () => {
-    localStorage.removeItem("token")
+    removeTokenFromLocalStorage()
     window.location.reload()
   }
 
